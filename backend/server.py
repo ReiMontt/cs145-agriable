@@ -1,5 +1,6 @@
 import uvicorn
 import traceback
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -17,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- CREDENTIALS ---
+# --- CONFIGS ---
 SUPABASE_URL = "https://ptlsehqsupagemvfzipz.supabase.co"
 SUPABASE_KEY = "sb_secret_Dmh_zR76mqZXT-thfhr_fw_kZkyDJo7"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -25,90 +26,99 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 config = Dynaconf(settings_files=["./config.toml"], environments=False)
 authenticator = MOSIPAuthenticator(config=config)
 
+# --- MODELS ---
 class ScanRequest(BaseModel):
-    national_id: str
+    uin: str
+    name: str
+    dob: str
+    location1: Optional[str] = None
+    location3: Optional[str] = None
+    zone: Optional[str] = None
+    postal_code: Optional[str] = None
+    address_line1: Optional[str] = None
+    address_line2: Optional[str] = None
+    address_line3: Optional[str] = None
 
 class DispenseLog(BaseModel):
-    national_id: str
-    dispensed_kg: float
+    target_id: str   
+    source_id: str   
+    changed_kg: float
 
-@app.get("/")
+@app.get("/api/health")
 def home():
-    return {"message": "AgriAble Server is Online"}
+    return {"status": "online", "system": "AgriAble"}
 
 @app.post("/api/verify-farmer")
 def verify_farmer(req: ScanRequest):
-    print(f"\n--- Processing Verification for ID: {req.national_id} ---")
-    
-    # 1. Fetch from Supabase
     try:
-        db_res = supabase.table("rsbsa_farmers").select("*").eq("national_id", req.national_id).execute()
+        # Build Demographics
+        demo_args = {"dob": req.dob, "name": [{"language": "eng", "value": req.name}]}
+        if req.location1: demo_args["location1"] = [{"language": "eng", "value": req.location1}]
+        if req.location3: demo_args["location3"] = [{"language": "eng", "value": req.location3}]
+        if req.zone: demo_args["zone"] = [{"language": "eng", "value": req.zone}]
+        if req.postal_code: demo_args["postal_code"] = req.postal_code
+        if req.address_line1: demo_args["address_line1"] = [{"language": "eng", "value": req.address_line1}]
+        if req.address_line2: demo_args["address_line2"] = [{"language": "eng", "value": req.address_line2}]
+        if req.address_line3: demo_args["address_line3"] = [{"language": "eng", "value": req.address_line3}]
+
+        demo = DemographicsModel(**demo_args)
+        
+        # Verify MOSIP
+        response = authenticator.auth(individual_id=req.uin, individual_id_type="UIN", demographic_data=demo, consent=True)
+        res_body = response.json()
+        
+        if not res_body.get("response", {}).get("authStatus", False):
+            raise HTTPException(status_code=401, detail="MOSIP Identity Mismatch.")
+
+        # Verify RSBSA
+        db_res = supabase.table("users").select("*").eq("national_id", req.uin).execute()
         if not db_res.data:
-            print("Error: ID not in Supabase")
-            raise HTTPException(status_code=404, detail="ID not found in RSBSA Database")
+            raise HTTPException(status_code=404, detail="Identity Verified by MOSIP, but not in RSBSA.")
         
-        farmer_data = db_res.data[0]
-        farmer_name = farmer_data["name"]
-        print(f"Database Match: {farmer_name}")
-    except Exception as e:
-        print(f"Supabase Error: {e}")
-        raise HTTPException(status_code=500, detail="Database Error")
-
-    # 2. Verify with MOSIP
-    try:
-        print("Sending Request to MOSIP Testbed...")
-        demographics_data = DemographicsModel(
-            name=[{"language": "eng", "value": farmer_name}]
-        )
-        
-        response = authenticator.auth(
-            individual_id=req.national_id,
-            individual_id_type="UIN",
-            demographic_data=demographics_data,
-            consent=True
-        )
-        
-        response_body = response.json()
-        print(f"MOSIP Raw Response: {response_body}")
-
-        if "errors" in response_body and response_body["errors"]:
-            error_msg = response_body["errors"][0].get("errorMessage", "Unknown Error")
-            raise HTTPException(status_code=401, detail=f"MOSIP Error: {error_msg}")
-            
-        auth_status = response_body.get("response", {}).get("authStatus", False)
-        if not auth_status:
-            raise HTTPException(status_code=401, detail="Auth Failed: Name mismatch")
-        
-        print("Verification Successful!")
-        return {"status": "success", "verified": True, "data": farmer_data}
-        
-    except Exception as e:
-        print("\n!!! MOSIP AUTHENTICATION CRASHED !!!")
-        traceback.print_exc() # This prints the REAL error to your terminal
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"status": "success", "user": db_res.data[0]}
+    except HTTPException: raise
+    except Exception:
+        raise HTTPException(status_code=500, detail="Verification system error.")
 
 @app.post("/api/log-transaction")
 def log_transaction(req: DispenseLog):
     try:
-        res = supabase.table("rsbsa_farmers").select("quota_kg").eq("national_id", req.national_id).execute()
-        new_quota = max(0, res.data[0]['quota_kg'] - req.dispensed_kg)
-        supabase.table("rsbsa_farmers").update({"quota_kg": new_quota}).eq("national_id", req.national_id).execute()
-        supabase.table("transactions").insert({"national_id": req.national_id, "dispensed_kg": req.dispensed_kg}).execute()
-        return {"status": "success", "new_quota": new_quota}
+        log_res = supabase.table("transactions").insert({
+            "target_id": req.target_id,
+            "source_id": req.source_id,
+            "changed_kg": req.changed_kg
+        }).execute()
+        return {"status": "success", "id": log_res.data[0]['id'], "timestamp": log_res.data[0]['timestamp']}
     except Exception as e:
-        print(f"Log Transaction Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Logging Error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to log.")
 
 @app.get("/api/dashboard-stats")
 def get_stats():
-    res = supabase.table("transactions").select("dispensed_kg").execute()
-    total = sum(item['dispensed_kg'] for item in res.data)
+    res = supabase.table("transactions").select("changed_kg").execute()
+    total = sum(item['changed_kg'] for item in res.data)
     return {"total_kg": f"{total:.2f}", "count": len(res.data)}
 
 @app.get("/api/recent-logs")
 def get_logs():
-    res = supabase.table("transactions").select("*, rsbsa_farmers(name)").order("timestamp", desc=True).limit(10).execute()
+    # Fetch logs
+    res = supabase.table("transactions").select("*").order("timestamp", desc=True).limit(10).execute()
+    # Manual Join to prevent schema cache errors
+    for log in res.data:
+        u_res = supabase.table("users").select("name").eq("national_id", log["target_id"]).execute()
+        log["users"] = {"name": u_res.data[0]["name"]} if u_res.data else {"name": "Unknown"}
     return res.data
+
+@app.get("/api/farmers")
+def get_farmers():
+    res = supabase.table("users").select("*").execute()
+    return res.data
+
+import os
+from fastapi.staticfiles import StaticFiles
+DIST_DIR = "/app/dist"
+if os.path.exists(DIST_DIR):
+    app.mount("/", StaticFiles(directory=DIST_DIR, html=True), name="frontend")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

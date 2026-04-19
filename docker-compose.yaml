@@ -4,36 +4,20 @@ services:
     container_name: agriable-vpn
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
-    # -- ADD THESE TWO LINES --
     privileged: true
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
-    # -------------------------
     volumes:
       - ./vpn:/config
-      - /lib/modules:/lib/modules
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Manila
     ports:
-      - "8000:8000" # The backend lives here now
-      - "5173:5173" # The frontend lives here now
+      - "8000:8000"
     restart: unless-stopped
 
-  backend:
-    build: ./backend
-    container_name: agriable-backend
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: agriable-app
     network_mode: "service:vpn"
-    depends_on:
-      - vpn
-    volumes:
-      - ./backend:/app
-
-  frontend:
-    build: ./frontend
-    container_name: agriable-frontend
-    network_mode: "service:vpn" # Move frontend to the VPN network too
     depends_on:
       - vpn
