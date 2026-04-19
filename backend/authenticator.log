@@ -1,0 +1,122 @@
+2026-04-19 17:08:41,789 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 17:08:41,791 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 17:08:41,791 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 17:08:42,355 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 17:08:42,924 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 17:09:08,559 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 17:09:08,561 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 17:09:08,561 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 17:09:09,159 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 17:09:09,722 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 17:10:06,379 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 17:10:06,381 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 17:10:06,382 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 17:10:06,946 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 17:10:07,509 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 17:27:06,780 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:27:06,782 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:27:06,785 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:27:06,785 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:27:06,786 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:27:06,786 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:27:07,353 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:27:07,353 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 17:29:50,033 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 17:29:50,034 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 17:29:50,034 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 17:29:50,590 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 17:29:51,154 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 17:30:18,855 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:30:18,857 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:30:18,858 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:30:18,858 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:30:18,859 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:30:18,859 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:30:19,425 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:30:19,426 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 17:30:30,170 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:30:30,171 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:30:30,171 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:30:30,171 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:30:30,171 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:30:30,172 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:30:30,190 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:30:30,190 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 17:30:38,688 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:30:38,689 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:30:38,689 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:30:38,690 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:30:38,690 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:30:38,690 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:30:38,702 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:30:38,702 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 17:30:50,929 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:30:50,929 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:30:50,930 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:30:50,930 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:30:50,930 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:30:50,931 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:30:50,943 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:30:50,943 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 17:46:54,145 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:46:54,146 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:46:54,147 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:46:54,148 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:46:54,148 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:46:54,148 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:46:54,158 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:46:54,158 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 17:47:24,327 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:47:24,328 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:47:24,328 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:47:24,329 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:47:24,329 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:47:24,329 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:47:24,339 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:47:24,339 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 17:50:52,352 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 17:50:52,353 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 17:50:52,353 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 17:50:52,912 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 17:50:53,479 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 17:52:18,136 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 17:52:18,153 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 17:52:18,155 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 17:52:18,155 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 17:52:18,156 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 17:52:18,156 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 17:52:18,873 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 17:52:18,873 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 10:10:34,267 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 10:10:34,268 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 10:10:34,268 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 10:10:34,649 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 10:10:35,040 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 10:15:28,764 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 10:15:28,765 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 10:15:28,765 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 10:15:29,132 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 10:15:29,505 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 10:19:20,447 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-04-19 10:19:20,448 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-04-19 10:19:20,448 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-04-19 10:19:20,815 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-04-19 10:19:21,183 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-04-19 10:19:49,958 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 10:19:49,965 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 10:19:49,967 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 10:19:49,968 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 10:19:49,968 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 10:19:49,968 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 10:19:50,342 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 10:19:50,342 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 10:19:55,587 - authenticator.log - INFO - Auth Request for Demographic Completed.
+2026-04-19 10:21:06,974 - authenticator.log - INFO - Received Auth Request for demographic.
+2026-04-19 10:21:06,974 - authenticator.log - INFO - Request for Auth Data Encryption.
+2026-04-19 10:21:06,975 - authenticator.log - INFO - Generating AES Key and encrypting Auth Data Completed.
+2026-04-19 10:21:06,976 - authenticator.log - INFO - Encrypting Random AES Key Completed.
+2026-04-19 10:21:06,976 - authenticator.log - INFO - Generation of SHA256 Hash for the Auth Data completed.
+2026-04-19 10:21:06,976 - authenticator.log - INFO - Request for Sign Auth Request Data.
+2026-04-19 10:21:06,985 - authenticator.log - INFO - Generation for JWS Signature completed.
+2026-04-19 10:21:06,985 - authenticator.log - INFO - Got <POST> Request for URL: https://api-internal.pdec.mosip.net/idauthentication/v1
+2026-04-19 10:21:30,539 - authenticator.log - INFO - Auth Request for Demographic Completed.
