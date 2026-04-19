@@ -64,11 +64,9 @@ Install the following:
 
 From the repository root:
 
-1. Create your local env file from template (`.env.template` → `.env`)
-2. Prepare secret files in a local, untracked folder (see Configuration & secrets)
-3. Build and start all services with Docker Compose
-4. Open the frontend at `http://localhost:5173`
-5. Backend health endpoint is at `http://localhost:8000/`
+1. Build and start all services with Docker Compose
+2. Open the frontend at `http://localhost:5173`
+3. Backend health endpoint is at `http://localhost:8000/`
 
 If the stack starts correctly, `/` should return:
 
@@ -138,24 +136,7 @@ Returns recent transaction records (with related farmer data).
 
 ## Configuration & secrets
 
-Use `.env.template` as the source of truth for runtime configuration.
-
-Important: `.env` should contain **values** and **file paths**, not raw certificate/key file contents.
-
-### File-based secrets (`.pem`, `.p12`, `wg0.conf`)
-
-For files like:
-- MOSIP certificates (`.pem`)
-- MOSIP key stores (`.p12`)
-- WireGuard config (`wg0.conf`)
-
-store them on disk (example folder: `./secrets/...`) and set their **paths** in `.env`:
-- `MOSIP_ENCRYPT_CERT_PATH`
-- `MOSIP_DECRYPT_P12_PATH`
-- `MOSIP_SIGN_P12_PATH`
-- `WG_CONFIG_PATH`
-
-This is the standard pattern because these are binary/config files, not scalar env values.
+This repo currently contains hardcoded credentials/config values in code/config files for development convenience.
 
 Important files to review:
 - `backend/server.py`
@@ -163,10 +144,9 @@ Important files to review:
 - `vpn/wg_confs/wg0.conf`
 
 For safer setup:
-1. Copy `.env.template` to `.env` and fill in real values
-2. Keep cert/key/VPN files outside versioned paths (or in ignored local folders)
-3. Do **not** commit real credentials, private keys, or `wg0.conf`
-4. Rotate any exposed keys before sharing/deploying
+1. Move secrets into environment variables (`.env`)
+2. Do **not** commit real credentials or private keys
+3. Rotate any exposed keys before sharing/deploying
 
 ---
 
