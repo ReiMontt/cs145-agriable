@@ -2,8 +2,7 @@
 // All frontend requests go through here.
 
 export const API_BASE_URL =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined) ||
-  "http://18.210.79.21";
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) || "";
 
 export class ApiError extends Error {
   status: number;
@@ -15,10 +14,7 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(
-  path: string,
-  init: RequestInit = {},
-): Promise<T> {
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${path}`;
   const res = await fetch(url, {
     ...init,
