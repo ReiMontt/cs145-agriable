@@ -37,6 +37,8 @@ const HwSimulator = () => {
   const [farmers, setFarmers] = useState<Farmer[]>([]);
   const [loadingFarmers, setLoadingFarmers] = useState(false);
   const [selectedUin, setSelectedUin] = useState<string>("");
+  const [scanUin, setScanUin] = useState("");
+  const [scanName, setScanName] = useState("");
   const [dob, setDob] = useState("1990-01-01");
   const [kg, setKg] = useState("2.5");
 
@@ -81,26 +83,38 @@ const HwSimulator = () => {
 
   const selectedFarmer = farmers.find((f) => f.national_id === selectedUin) ?? null;
 
+  // Autofill UIN/name when picking a farmer from the registry dropdown.
+  useEffect(() => {
+    if (selectedFarmer) {
+      setScanUin(selectedFarmer.national_id);
+      setScanName(selectedFarmer.name);
+    }
+  }, [selectedFarmer]);
+
   const verify = async () => {
-    if (!selectedFarmer) {
-      toast({ title: "Pick a farmer first", variant: "destructive" });
+    const uin = scanUin.trim();
+    const name = scanName.trim();
+    if (!uin || !name || !dob) {
+      toast({
+        title: "Missing scan fields",
+        description: "UIN, name and DOB are required to call /verify-farmer.",
+        variant: "destructive",
+      });
       return;
     }
     setVerifying(true);
-    append("info", `[SCAN] UIN=${selectedFarmer.national_id} -> POST /api/verify-farmer`);
+    // Backend (MOSIP mock) expects DOB as YYYY/MM/DD, not YYYY-MM-DD.
+    const dobFormatted = dob.replace(/-/g, "/");
+    const payload = { uin, name, dob: dobFormatted, machine_id: machineId };
+    append("info", `[SCAN] POST /api/verify-farmer ${JSON.stringify(payload)}`);
     try {
-      const res = await api.verifyFarmer({
-        uin: selectedFarmer.national_id,
-        name: selectedFarmer.name,
-        dob,
-        machine_id: machineId,
-      });
+      const res = await api.verifyFarmer(payload);
       const sid =
         (res.session_id as string | undefined) ??
         (res.session as { id?: string } | undefined)?.id ??
         null;
       setSessionId(sid);
-      append("ok", `Verified ${selectedFarmer.name}. session_id=${sid ?? "(none)"}`);
+      append("ok", `Verified ${name}. session_id=${sid ?? "(none)"}`);
       const remaining =
         (res.remaining_quota_kg as number | undefined) ??
         (res.farmer as Farmer | undefined)?.remaining_quota_kg;
@@ -108,15 +122,29 @@ const HwSimulator = () => {
         append("info", `Remaining quota: ${remaining} kg`);
       }
     } catch (e: unknown) {
-      const msg = e instanceof ApiError ? e.message : e instanceof Error ? e.message : String(e);
-      append("err", `verify-farmer failed: ${msg}`);
+      if (e instanceof ApiError) {
+        append("err", `verify-farmer HTTP ${e.status}: ${e.message}`);
+        if (e.body) {
+          append("err", `response body: ${JSON.stringify(e.body)}`);
+        }
+        if (e.status === 404 || /missing|not\s*found/i.test(e.message)) {
+          append(
+            "info",
+            `Hint: backend (MOSIP) could not match this UIN. Verify the farmer exists in MOSIP, or try one from the registry dropdown above.`,
+          );
+        }
+      } else {
+        const msg = e instanceof Error ? e.message : String(e);
+        append("err", `verify-farmer failed: ${msg}`);
+      }
     } finally {
       setVerifying(false);
     }
   };
 
   const log = async () => {
-    if (!sessionId || !selectedFarmer) {
+    const uin = scanUin.trim();
+    if (!sessionId || !uin) {
       toast({ title: "No active session", description: "Verify a farmer first.", variant: "destructive" });
       return;
     }
@@ -130,7 +158,7 @@ const HwSimulator = () => {
     try {
       await api.logTransaction({
         session_id: sessionId,
-        target_id: selectedFarmer.national_id,
+        target_id: uin,
         source_id: machineId,
         changed_kg: Number(changed.toFixed(2)),
       });
@@ -139,8 +167,13 @@ const HwSimulator = () => {
       // refresh farmers to reflect new remaining quota
       loadFarmers();
     } catch (e: unknown) {
-      const msg = e instanceof ApiError ? e.message : e instanceof Error ? e.message : String(e);
-      append("err", `log-transaction failed: ${msg}`);
+      if (e instanceof ApiError) {
+        append("err", `log-transaction HTTP ${e.status}: ${e.message}`);
+        if (e.body) append("err", `response body: ${JSON.stringify(e.body)}`);
+      } else {
+        const msg = e instanceof Error ? e.message : String(e);
+        append("err", `log-transaction failed: ${msg}`);
+      }
     } finally {
       setLogging(false);
     }
@@ -227,7 +260,7 @@ const HwSimulator = () => {
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <Label>Farmer (RSBSA)</Label>
+                  <Label>Prefill from RSBSA registry</Label>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -241,7 +274,7 @@ const HwSimulator = () => {
                 </div>
                 <Select value={selectedUin} onValueChange={setSelectedUin}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select farmer to scan" />
+                    <SelectValue placeholder="Pick a registered farmer (optional)" />
                   </SelectTrigger>
                   <SelectContent>
                     {farmers.map((f) => (
@@ -251,6 +284,30 @@ const HwSimulator = () => {
                     ))}
                   </SelectContent>
                 </Select>
+                <p className="text-[11px] text-muted-foreground font-body">
+                  Selecting a farmer fills UIN + name below. You can also type any
+                  scan payload manually to test MOSIP.
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="scan-uin">UIN (National ID)</Label>
+                <Input
+                  id="scan-uin"
+                  inputMode="numeric"
+                  value={scanUin}
+                  onChange={(e) => setScanUin(e.target.value)}
+                  placeholder="e.g. 5408602380"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="scan-name">Name</Label>
+                <Input
+                  id="scan-name"
+                  value={scanName}
+                  onChange={(e) => setScanName(e.target.value)}
+                  placeholder="As registered in MOSIP"
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -271,24 +328,49 @@ const HwSimulator = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
-                <Button className="press" onClick={verify} disabled={verifying || !selectedFarmer}>
-                  {verifying ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <ScanLine className="w-4 h-4 mr-1.5" />}
-                  Scan + Verify
-                </Button>
-                <Button className="press" variant="secondary" onClick={log} disabled={logging || !sessionId}>
-                  {logging ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Send className="w-4 h-4 mr-1.5" />}
-                  Log Transaction
-                </Button>
+              <div className="pt-3 border-t space-y-2">
                 <Button
-                  className="press"
-                  variant="outline"
-                  onClick={cancel}
-                  disabled={cancelling || !sessionId}
+                  size="lg"
+                  className="press hover-lift w-full font-semibold shadow-sm"
+                  onClick={verify}
+                  disabled={verifying || !scanUin.trim() || !scanName.trim()}
                 >
-                  {cancelling ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Ban className="w-4 h-4 mr-1.5" />}
-                  Cancel Session
+                  {verifying ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <ScanLine className="w-4 h-4 mr-2" />
+                  )}
+                  {verifying ? "Verifying with MOSIP…" : "Scan + Verify Farmer"}
                 </Button>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    size="lg"
+                    className="press hover-lift font-semibold bg-accent text-accent-foreground hover:bg-accent/90"
+                    onClick={log}
+                    disabled={logging || !sessionId}
+                  >
+                    {logging ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Send className="w-4 h-4 mr-2" />
+                    )}
+                    Dispense & Log
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="press hover-lift font-semibold border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                    onClick={cancel}
+                    disabled={cancelling || !sessionId}
+                  >
+                    {cancelling ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Ban className="w-4 h-4 mr-2" />
+                    )}
+                    Cancel
+                  </Button>
+                </div>
               </div>
 
               {selectedFarmer && (

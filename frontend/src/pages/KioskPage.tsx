@@ -104,7 +104,7 @@ const KioskWizard = () => {
         const verifyRes = await api.verifyFarmer({
           uin: candidate.national_id,
           name: candidate.name,
-          dob: "1990-01-01",
+          dob: "1990/01/01",
           machine_id: MACHINE_ID,
         });
         if (cancelled) return;
