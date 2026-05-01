@@ -203,3 +203,13 @@
 2026-04-19 16:30:17,394 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
 2026-04-19 16:30:17,848 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
 2026-04-19 16:30:18,088 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-05-01 13:37:46,424 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-05-01 13:37:46,425 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-05-01 13:37:46,426 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-05-01 13:37:46,990 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-05-01 13:37:47,559 - authenticator.log - INFO - Creating JWK key for JWS signing.
+2026-05-01 13:40:46,750 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-05-01 13:40:46,752 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-05-01 13:40:46,752 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-05-01 13:40:47,330 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-05-01 13:40:47,916 - authenticator.log - INFO - Creating JWK key for JWS signing.
