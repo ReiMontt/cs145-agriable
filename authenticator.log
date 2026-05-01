@@ -1,0 +1,32 @@
+2026-05-01 16:10:35,927 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-05-01 16:10:35,927 - authenticator.log - ERROR - Error Reading PEM file format. Error Message: Traceback (most recent call last):
+  File "/Users/princessventures/Downloads/cs145-agriable/.venv/lib/python3.11/site-packages/mosip_auth_sdk/_authenticator/utils/cryptoutil.py", line 74, in _get_certificate_obj
+    with open(cert_path, "rb") as file:
+         ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'pdec_ida_partner.pem'
+
+2026-05-01 16:10:35,927 - authenticator.log - ERROR - Error Reading both PEM/DER file format. Error: Traceback (most recent call last):
+  File "/Users/princessventures/Downloads/cs145-agriable/.venv/lib/python3.11/site-packages/mosip_auth_sdk/_authenticator/utils/cryptoutil.py", line 84, in _get_certificate_obj
+    with open(cert_path, "rb") as file:
+         ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'pdec_ida_partner.pem'
+
+2026-05-01 16:11:40,513 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-05-01 16:11:40,514 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-05-01 16:11:40,514 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-05-01 16:11:40,514 - authenticator.log - ERROR - Error Loading P12 file to create objects. Error: Traceback (most recent call last):
+  File "/Users/princessventures/Downloads/cs145-agriable/.venv/lib/python3.11/site-packages/mosip_auth_sdk/_authenticator/utils/cryptoutil.py", line 102, in _get_priv_key_cert
+    with open(p12_file_path, "rb") as file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'keystore.p12'
+
+2026-05-01 16:12:39,553 - authenticator.log - INFO - Creating certificate Object for the file Path: pdec_ida_partner.pem
+2026-05-01 16:12:39,555 - authenticator.log - INFO - Cretificate Object Creation successful(PEM Format).
+2026-05-01 16:12:39,555 - authenticator.log - INFO - Reading P12 file. File Path: keystore.p12
+2026-05-01 16:12:39,788 - authenticator.log - INFO - Reading P12 file. File Path: keystore-signed.p12
+2026-05-01 16:12:39,789 - authenticator.log - ERROR - Error Loading P12 file to create objects. Error: Traceback (most recent call last):
+  File "/Users/princessventures/Downloads/cs145-agriable/.venv/lib/python3.11/site-packages/mosip_auth_sdk/_authenticator/utils/cryptoutil.py", line 102, in _get_priv_key_cert
+    with open(p12_file_path, "rb") as file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'keystore-signed.p12'
+
