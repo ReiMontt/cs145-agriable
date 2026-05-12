@@ -23,7 +23,6 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/kiosk" element={<KioskPage />} />
           <Route path="/farmer" element={<FarmerPortal />} />
           <Route path="/simulator" element={<HwSimulator />} />
           <Route path="/audit" element={<AuditLogs />} />
