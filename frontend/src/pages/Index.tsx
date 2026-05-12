@@ -16,12 +16,6 @@ const Index = () => {
 
   const primaryTiles = [
     {
-      title: "Kiosk Demo",
-      description: "Walk through the on-device dispenser flow.",
-      icon: Monitor,
-      path: "/kiosk",
-    },
-    {
       title: "Admin Dashboard",
       description: "Manage farmers and review live transactions.",
       icon: ShieldCheck,
