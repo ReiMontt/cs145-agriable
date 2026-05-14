@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Sprout,
-  Monitor,
   ShieldCheck,
   UserRound,
   Cpu,
@@ -64,7 +63,7 @@ const Index = () => {
         Secure and verified fertilizer distribution for Filipino farmers
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-3xl mb-12">
+      <div className="grid grid-cols-1 gap-5 w-full max-w-md mb-12">
         {primaryTiles.map((tile, i) => (
           <Card
             key={tile.path}
